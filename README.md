@@ -209,3 +209,11 @@ IRC
 ===
 
 Ask questions and provide feedback in `#sovereign` on [Freenode](http://freenode.net).
+
+
+
+
+## TO DO 
+# Main user
+# set org domain etc
+# in group vars
