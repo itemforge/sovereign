@@ -57,7 +57,7 @@ What You’ll Need
 2.  [64-bit Debian 8.3](http://www.debian.org/) or an equivalent Linux distribution. (You can use whatever distro you want, but deviating from Debian will require more tweaks to the playbooks. See Ansible’s different [packaging](http://docs.ansible.com/ansible/list_of_packaging_modules.html) modules.)
 3.  A [Tarsnap](http://www.tarsnap.com) account with some credit in it. You could comment this out if you want to use a different backup service. Consider paying your hosting provider for backups or using an additional backup service for redundancy.
 
-You do not need to acquire an SSL certificate.  The SSL certificates you need will be obtained from [Let's Encrypt](https://letsencrypt.org/) automatically when you deploy your server.
+You do not need to acquire an SSL certificate.  The SSL certificates you need will be obtained from [Let's Encrypt](https://letsencrypt.org/) automatically when you deploy your server with ansible.
 
 
 Installation
@@ -87,22 +87,22 @@ For goodness sake, change the root password:
 
 Create a user account for Ansible to do its thing through:
 
-    useradd deploy
-    passwd deploy
-    mkdir /home/deploy
+    useradd ansible
+    passwd ansible
+    mkdir /home/ansible
 
 Authorize your ssh key if you want passwordless ssh login (optional):
 
-    mkdir /home/deploy/.ssh
-    chmod 700 /home/deploy/.ssh
-    nano /home/deploy/.ssh/authorized_keys
-    chmod 400 /home/deploy/.ssh/authorized_keys
-    chown deploy:deploy /home/deploy -R
-    echo 'deploy ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/deploy
+    mkdir /home/ansible/.ssh
+    chmod 700 /home/ansible/.ssh
+    nano /home/ansible/.ssh/authorized_keys
+    chmod 400 /home/ansible/.ssh/authorized_keys
+    chown ansible:ansible /home/ansible -R
+    echo 'ansible ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/ansible
 
-Your new account will be automatically set up for passwordless `sudo`. Or you can just add your `deploy` user to the sudo group.
+Your new account will be automatically set up for passwordless `sudo`. Or you can just add your `ansible` user to the sudo group.
 
-    adduser deploy sudo
+    adduser ansible sudo
 
 ## On your local machine
 
@@ -144,7 +144,7 @@ To run the whole dang thing:
 
     ansible-playbook -i ./hosts --ask-sudo-pass site.yml
     
-If you chose to make a passwordless sudo deploy user, you can omit the `--ask-sudo-pass` argument.
+If you chose to make a passwordless sudo ansible user, you can omit the `--ask-sudo-pass` argument.
 
 To run just one or more piece, use tags. I try to tag all my includes for easy isolated development. For example, to focus in on your firewall setup:
 
@@ -170,13 +170,13 @@ Set up SPF and reverse DNS [as per this post](http://sealedabstract.com/code/nsa
 
 Sign in to the ZNC web interface and set things up to your liking. It isn’t exposed through the firewall, so you must first set up an SSH tunnel:
 
-	ssh deploy@example.com -L 6643:localhost:6643
+	ssh ansible@example.com -L 6643:localhost:6643
 
 Then proceed to http://localhost:6643 in your web browser.
 
 Similarly, to access the server monitoring page, use another SSH tunnel:
 
-    ssh deploy@example.com -L 2812:localhost:2812
+    ssh ansible@example.com -L 2812:localhost:2812
 
 Again proceeding to http://localhost:2812 in your web browser.
 
